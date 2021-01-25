@@ -7,7 +7,6 @@ RunResults
 # User-specific stuff
 .idea
 
-
 # CMake
 cmake-build-*/
 
@@ -65,4 +64,3 @@ buildNumber.properties
 .mvn/timing.properties
 # https://github.com/takari/maven-wrapper#usage-without-binary-jar
 .mvn/wrapper/maven-wrapper.jar
-

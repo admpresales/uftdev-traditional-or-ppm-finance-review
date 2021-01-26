@@ -16,6 +16,7 @@ import unittesting.*;
 
 import java.time.Year;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 public class UFTDeveloperTest extends UnitTestClassBase {
 Browser browser;
@@ -54,6 +55,8 @@ Browser browser2;
 
     @Test
     public void test() throws GeneralLeanFtException {
+        int counter;
+        boolean NewBrowserThere;
         browser.navigate("http://nimbusserver.aos.com:8088");
         browser.sync();
         String ThisYear = Year.now().toString();
@@ -113,7 +116,26 @@ Browser browser2;
         BrowserDescription browserDescription = new BrowserDescription();
         browserDescription.setOpenTitle("Financial Summary");
         browserDescription.setType(BrowserType.CHROME);
-        browser2 = BrowserFactory.attach(browserDescription);
+        counter = 0;
+        do {
+            counter++;
+            try {
+                browser2 = BrowserFactory.attach(browserDescription);
+                NewBrowserThere = true;
+                break;
+            } catch (Exception e) {
+                //e.printStackTrace();
+                NewBrowserThere = false;
+                if (counter >= 15) {
+                    throw e;
+                }
+            }
+            try {
+                TimeUnit.SECONDS.sleep(1);
+            } catch (InterruptedException interruptedException) {
+                interruptedException.printStackTrace();
+            }
+        } while (!NewBrowserThere);
 
         Link AddCostsLink = browser2.describe(Link.class, new LinkDescription.Builder()
                 .innerText("Add Costs ").build());
